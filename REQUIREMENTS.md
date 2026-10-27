@@ -82,6 +82,36 @@ The system shall allow a user to enter the total number of pages for an existing
 
 The system shall detect when the current reading position reaches the total number of pages. The system shall request user confirmation before changing the reading status to *Finished*.
 
+#### FR-017: Record Reading Progress Date
+
+The system shall automatically assign the current date to a new reading progress entry. The system shall allow a user to backdate a reading progress entry.
+
+### Reading Analytics
+---
+
+#### FR-018: View Reading Statistics
+
+The system shall allow a user to view reading statistics including total pages read and number of finished books in the selected time period.
+
+#### FR-019: Select Reporting Period
+
+The system shall allow a user to select a reporting period (*weekly*, *monthly*, *yearly*, or *all-time*) to view reading statistics.
+
+#### FR-020: Visualize Reading Progress
+
+The system shall allow a user to visualize reading progress over time for the selected reporting period.
+
+#### FR-021: Reading Activity by Day of Week
+
+The system shall allow  a user to view the total pages read grouped by day of the week for the selected reporting period.
+
+#### FR-022: Calculate Reading Streak
+
+The system shall automatically calculate a reading streak based on consecutive calendar days with positive recorded reading progress.
+
+#### FR-023: View Reading Streak Statistics
+
+
 
 
 
@@ -135,6 +165,34 @@ The current reading position must be greater than the previously recorded positi
 
 #### BR-010: Completion Confirmation
 
+When a user declines completion confirmation, the system shall keep the reading status *Currently Reading* unchanged. The recorded reading position and progress remain saved. When a user later confirms completion, the recorded reading progress must not be counted twice. 
+
+#### BR-011: Finished Book Tracking Lock
+
+Once a book is marked as *Finished*, the system shall allow neither adding new reading progress entries nor modifying the total number of pages.
+
+#### BR-012: Total Pages Modification Validation
+
+A user can modify the total number of pages while the book is marked as *Currently Reading*. The new total number of pages must not be less than the highest recorded reading position.
+
+#### BR-013: Reading Progress Date Validation
+
+The date of entry must not be in the future. The date and the reading position must preserve the chronological order of existing reading progress entries.
+
+#### BR-014: One Progress Entry per Day
+
+Only one reading progress entry per book  per calendar day is allowed. When an entry already exists for the same book and calendar day, the system shall update the existing entry instead of creating a new one.
+
+#### BR-015: Reading Position Correction
+
+The correction of an existing reading position is allowed while the book's reading status is *Currently Reading*. The corrected reading position must preserve the chronological order of existing reading progress entries.
+
+
+
+
+
+
+
 
 
 
@@ -144,9 +202,28 @@ The current reading position must be greater than the previously recorded positi
 
 ## 4. Open Questions
 
-> To be defined
+#### OQ-001: Confirming Book Completion Later
+
+How shall the system allow a user to confirm book completion later if the initial confirmation was declined and the last recorded reading position already equals the total number of pages?
+
+>Resolved
+
+**Resolution**: The user can confirm completion later without creating a new reading progress entry.
+
+**Related Requirements**: FR-016, BR-010
+
+#### OQ-002: Daily Reading Progress and Reading Streak
+
+How shall the system distinguish between progress recorded on a specific date and pages actually read on that date when calculating daily reading statistics and Reading Streaks?
+
+> Resolved
+
+**Resolution**: The system assigns reading progress to the date selected by the user. If no other date is selected, the current date is used. Reading statistics and Reading Streaks are calculated using these recorded dates, without attempting to infer reading activity on unrecorded days.
+
+**Related Requirements**: FR-013, FR-017, FR-022, BR-013, BR-014
 
 
+#### OQ-003: Resuming a Did Not Finish Book
 
-FR-005 – Add Book Notes
-BR-003 – Mandatory Discovery Source
+How shall the system preserve historical reading progress entries when a book marked as Did Not Finish is resumed, while ensuring that previously read pages are not counted twice?
+
